@@ -9,8 +9,11 @@ class Tasbih extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: HomePage(),
+    return MaterialApp(
+      theme: ThemeData(
+        fontFamily: 'Gilroy-Medium',
+      ),
+      home: const HomePage(),
     );
   }
 }
@@ -51,16 +54,60 @@ class TopPanel extends StatelessWidget {
           children: [
             Expanded(
               child: Container(
-                color: Colors.white,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                ),
                 height: 38,
                 width: 276,
+                padding: const EdgeInsets.all(4),
+                child: Row(
+                  children: [
+                    Expanded(child:
+                    Container(
+                      height: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(8),
+                        ),
+                        alignment: Alignment.center,
+                        child: const Text(
+                          'Activity',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(child:
+                    Container(
+                      height: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
+                        ),
+                        alignment: Alignment.center,
+                        child: const Text(
+                          'Saved',
+                          style: TextStyle(
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
             Container(
-              color: Colors.white,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
               height: 38,
               width: 54,
               margin: const EdgeInsets.only(left: 20),
+              child: Image.asset('assets/img/menu.png'),
             )
           ],
         ),
