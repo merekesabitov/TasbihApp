@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+const Color myBlue = Color(0xFF4664FF);
+
 void main() {
   runApp(const Tasbih());
 }
@@ -65,9 +67,9 @@ class TopPanel extends StatelessWidget {
                   children: [
                     Expanded(child:
                     Container(
-                      height: 30,
+                      height: 30, 
                       decoration: BoxDecoration(
-                        color: Colors.blue,
+                        color: myBlue,
                         borderRadius: BorderRadius.circular(8),
                         ),
                         alignment: Alignment.center,
@@ -75,6 +77,7 @@ class TopPanel extends StatelessWidget {
                           'Activity',
                           style: TextStyle(
                             color: Colors.white,
+                            fontSize: 12,
                           ),
                         ),
                       ),
@@ -91,6 +94,7 @@ class TopPanel extends StatelessWidget {
                           'Saved',
                           style: TextStyle(
                             color: Colors.black,
+                            fontSize: 12,
                           ),
                         ),
                       ),
@@ -125,8 +129,11 @@ class CounterPanel extends StatelessWidget {
       child: Column(
           children: [
             Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.white,
+              ),
               margin: const EdgeInsets.only(bottom: 14),
-              color: Colors.white,
               padding: const EdgeInsets.symmetric(vertical: 24),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -134,27 +141,62 @@ class CounterPanel extends StatelessWidget {
                   Container(
                     height: 35,
                     width: 35,
-                    color: Colors.blue,
+                    decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: myBlue,
+              ),
+              child: Image.asset('assets/img/decrement.png'),
                   ),
                   Container(
                     height: 154,
                     width: 154,
-                    color: Colors.blue,
+                    decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: myBlue,
+              ),
+              child: const Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(height: 10),
+                  Text(
+                    '33',
+                    style: TextStyle(fontSize: 48,
+                    fontFamily: 'Gilroy-Bold',
+                    color: Colors.white,),
+                  ),
+                  Text(
+                    'Dhikr',
+                    style: TextStyle(fontSize: 12,
+                    fontFamily: 'Gilroy-Bold',
+                    color: Colors.white,),
+                  ),
+                ],
+              ),
                   ),
                   Container(
                     height: 35,
                     width: 35,
-                    color: Colors.blue,
+                    decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: myBlue,
+              ),
+              child: Image.asset('assets/img/refresh.png'),
                   ),
                 ],
               ),
             ),
             Container(
-              color: Colors.white,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5)
+                ),
               height: 45,
               width: double.infinity,
               alignment: Alignment.center,
-              child: const Text('Save Dhikr'),
+              child: const Text(
+                'Save Dhikr',
+                style: TextStyle(color: myBlue),
+                ),
             ),
           ],
         ),
@@ -177,14 +219,15 @@ class DBPanel extends StatelessWidget {
         children: [
           const Text(
             'Last Saved Dhikrs',
-            style: TextStyle(fontWeight: FontWeight.bold,
+            style: TextStyle(
+              fontFamily: 'Gilroy-Bold',
           ),
           ),
           Container(
             width: 60,
             height: 2,
             margin: const EdgeInsets.only(top: 5, bottom: 25),
-            color: Colors.blue,
+            color: myBlue,
           ),
           Column(
             children: [
@@ -192,19 +235,19 @@ class DBPanel extends StatelessWidget {
                 width: double.infinity,
                 height: 49,
                 margin: const EdgeInsets.only(bottom: 10),
-                color: Colors.blue,
+                color: myBlue,
               ),
               Container(
                 width: double.infinity,
                 height: 49,
                 margin: const EdgeInsets.only(bottom: 10),
-                color: Colors.blue,
+                color: myBlue,
               ),
               Container(
                 width: double.infinity,
                 height: 49,
                 margin: const EdgeInsets.only(bottom: 10),
-                color: Colors.blue,
+                color: myBlue,
               ),
             ],
           )
