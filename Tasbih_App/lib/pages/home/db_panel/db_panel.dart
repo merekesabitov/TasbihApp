@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/db/db_fake.dart';
+import 'package:intl/intl.dart';
 import '../../../services/colors.dart';
 
 class DBPanel extends StatelessWidget {
@@ -33,7 +35,7 @@ class DBPanel extends StatelessWidget {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: 100,
+              itemCount: fakeDB.length,
               itemBuilder: (context, index) {
                 return Container(
                   decoration: BoxDecoration(
@@ -48,7 +50,7 @@ class DBPanel extends StatelessWidget {
                       width: 50,
                       alignment: Alignment.center,
                       child: Text(
-                        index.toString(),
+                        fakeDB[index].counter.toString(),
                         style: const TextStyle(
                           fontSize: 20,
                           fontFamily: 'Gilroy-Bold',
@@ -57,19 +59,19 @@ class DBPanel extends StatelessWidget {
                         ),
                       ),
                     Container(height: 30, width: 2, color: Colors.white),
-                    const Expanded (
+                    Expanded (
                       child: Padding(
-                        padding: EdgeInsets.only(left: 20, right: 15),
+                        padding: const EdgeInsets.only(left: 20, right: 15),
                         child: Text(
-                          'This text  will be in Database Panel. This text  will be in Database Panel. This text  will be in Database Panel.',
-                          style: TextStyle(fontSize: 12,),
+                          fakeDB[index].title,
+                          style: const TextStyle(fontSize: 12,),
                           maxLines: 2
                         ),
                       ),
                     ),
-                    const Text(
-                      '21.11.2023',
-                      style: TextStyle(
+                    Text(
+                      DateFormat('dd.MM.yyyy').format(fakeDB[index].date),
+                      style: const TextStyle(
                         fontSize: 10,
                         color: Color(0xFF9F9F9F),
                       ),

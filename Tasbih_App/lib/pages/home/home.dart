@@ -25,6 +25,10 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  void mySetState() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,14 +36,14 @@ class _HomePageState extends State<HomePage> {
       body: SafeArea(
         bottom: false,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 15),
+          padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Column(
             children: [
               TopPanel(
                 isActivity: isActivity,
                 toogle: toogle,
               ),
-              Visibility(visible: isActivity, child: CounterPanel()),
+              Visibility(visible: isActivity, child: CounterPanel(func: mySetState),),
               DBPanel(),
             ],
           ),
