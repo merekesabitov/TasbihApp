@@ -136,6 +136,7 @@ class _CounterPanelState extends State<CounterPanel> {
                             ),
                           );
 
+                          controller.clear();
                           widget.func();
                           Navigator.pop(context);
                         },

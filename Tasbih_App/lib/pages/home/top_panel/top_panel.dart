@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../../services/colors.dart';
 
 class TopPanel extends StatelessWidget {
@@ -68,15 +69,20 @@ class TopPanel extends StatelessWidget {
                 ),
               ),
             ),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
+            GestureDetector(
+              onTap: () {
+                context.go('/settings');
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                height: 38,
+                width: 54,
+                margin: const EdgeInsets.only(left: 20),
+                child: Image.asset('assets/img/menu.png'),
               ),
-              height: 38,
-              width: 54,
-              margin: const EdgeInsets.only(left: 20),
-              child: Image.asset('assets/img/menu.png'),
             )
           ],
         ),
