@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/db/db_fake.dart';
 import 'package:flutter_application_1/models/dhikr.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../services/colors.dart';
 
 class CounterPanel extends StatefulWidget {
@@ -16,13 +17,45 @@ class _CounterPanelState extends State<CounterPanel> {
   final controller = TextEditingController();
   int counter = 0;
 
-  void incrementer() {
-    setState(() => counter++);
+@override
+  void initState() {
+    getCounter();
+    super.initState();
   }
 
-  void decrementer() => (counter > 0) ? setState(() => counter--) : null;
+  Future<void> getCounter() async {
+    final prefs = await SharedPreferences.getInstance();
+    if(prefs.containsKey('counter')) {
+      counter = prefs.getInt('counter') ?? 0;
+      setState(() {});
+    }
+  }
 
-  void zeroing() => (counter != 0) ? setState(() => counter = 0) : null;
+  Future<void> incrementer() async {
+    final prefs = await SharedPreferences.getInstance();
+    counter++;
+    prefs.setInt('counter', counter);
+    setState(() {});
+  }
+
+  Future<void> decrementer() async {
+    if (counter > 0) {
+    final prefs = await SharedPreferences.getInstance();
+    counter--;
+    prefs.setInt('counter', counter);
+    setState(() {});
+    }
+  }
+
+  Future<void> zeroing() async {
+    if(counter != 0) {
+      final prefs = await SharedPreferences.getInstance();
+      counter = 0;
+      prefs.setInt('counter', counter);
+      setState(() {});
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
