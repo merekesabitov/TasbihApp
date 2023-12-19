@@ -4,7 +4,4 @@ class Dhikr {
   DateTime date;
 
   Dhikr({required this.counter, required this.title, required this.date});
-
-  void update() {}
-  void delete() {}
 }

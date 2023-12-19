@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/db/db_fake.dart';
 import 'package:flutter_application_1/models/dhikr.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../services/colors.dart';
 
@@ -17,7 +17,7 @@ class _CounterPanelState extends State<CounterPanel> {
   final controller = TextEditingController();
   int counter = 0;
 
-@override
+  @override
   void initState() {
     getCounter();
     super.initState();
@@ -25,7 +25,7 @@ class _CounterPanelState extends State<CounterPanel> {
 
   Future<void> getCounter() async {
     final prefs = await SharedPreferences.getInstance();
-    if(prefs.containsKey('counter')) {
+    if (prefs.containsKey('counter')) {
       counter = prefs.getInt('counter') ?? 0;
       setState(() {});
     }
@@ -40,22 +40,21 @@ class _CounterPanelState extends State<CounterPanel> {
 
   Future<void> decrementer() async {
     if (counter > 0) {
-    final prefs = await SharedPreferences.getInstance();
-    counter--;
-    prefs.setInt('counter', counter);
-    setState(() {});
+      final prefs = await SharedPreferences.getInstance();
+      counter--;
+      prefs.setInt('counter', counter);
+      setState(() {});
     }
   }
 
   Future<void> zeroing() async {
-    if(counter != 0) {
+    if (counter != 0) {
       final prefs = await SharedPreferences.getInstance();
       counter = 0;
       prefs.setInt('counter', counter);
       setState(() {});
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -161,16 +160,13 @@ class _CounterPanelState extends State<CounterPanel> {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          fakeDB.add(
-                            Dhikr(
+                          Hive.box<Dhikr>('dhikrs').add(Dhikr(
                               counter: counter,
                               title: controller.text,
-                              date: DateTime.now(),
-                            ),
-                          );
+                              date: DateTime.now()));
 
                           controller.clear();
-                          widget.func();
+                          //widget.func();
                           Navigator.pop(context);
                         },
                         child: const Text('Save'),

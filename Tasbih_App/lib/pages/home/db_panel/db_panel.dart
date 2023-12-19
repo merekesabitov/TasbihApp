@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/db/db_fake.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 import '../../../models/dhikr.dart';
 import '../../../services/colors.dart';
@@ -18,6 +18,7 @@ class _DBPanelState extends State<DBPanel> {
   @override
   void dispose() {
     controller.dispose();
+    Hive.close();
     super.dispose();
   }
 
@@ -48,109 +49,146 @@ class _DBPanelState extends State<DBPanel> {
             margin: const EdgeInsets.only(top: 5, bottom: 25),
             color: myBlue,
           ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: fakeDB.length,
-              itemBuilder: (context, index) {
-                index = (fakeDB.length - 1) - index;
-                return Container(
-                  decoration: BoxDecoration(
-                      color: const Color(0xFFF9F9F9),
-                      borderRadius: BorderRadius.circular(10)),
-                  margin: const EdgeInsets.only(bottom: 10),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 50,
-                        alignment: Alignment.center,
-                        child: Text(
-                          fakeDB[index].counter.toString(),
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontFamily: 'Gilroy-Bold',
-                            color: myBlue,
-                          ),
-                        ),
-                      ),
-                      Container(height: 30, width: 2, color: Colors.white),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 15),
-                          child: Text(fakeDB[index].title,
-                              style: const TextStyle(
-                                fontSize: 12,
-                              ),
-                              maxLines: 2),
-                        ),
-                      ),
-                      Text(
-                        DateFormat('dd.MM.yyyy').format(fakeDB[index].date),
-                        style: const TextStyle(
-                          fontSize: 10,
-                          color: Color(0xFF9F9F9F),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: const Text('Add Dhikr'),
-                                content: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('Current Dhikr count: ${fakeDB[index].counter}'),
-                                    const SizedBox(height: 10),
-                                    CupertinoTextField(
-                                      controller: controller,
-                                      placeholder: 'Enter title of Dhikr',
+          FutureBuilder(
+            future: Hive.openBox<Dhikr>('dhikrs'),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState != ConnectionState.done) {
+                return const Center(
+                  child: CupertinoActivityIndicator(color: Colors.white),
+                );
+              } else {
+                return ValueListenableBuilder(
+                  valueListenable: Hive.box<Dhikr>('dhikrs').listenable(),
+                  builder: (BuildContext context, snapshot, child) {
+                    final dhikr = snapshot;
+                    return Expanded(
+                      child: ListView.builder(
+                        itemCount: dhikr.length,
+                        itemBuilder: (context, index) {
+                          index = (dhikr.length - 1) - index;
+                          return Container(
+                            decoration: BoxDecoration(
+                                color: const Color(0xFFF9F9F9),
+                                borderRadius: BorderRadius.circular(10)),
+                            margin: const EdgeInsets.only(bottom: 10),
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 50,
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    dhikr.getAt(index)?.counter.toString() ??
+                                        '0',
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      fontFamily: 'Gilroy-Bold',
+                                      color: myBlue,
                                     ),
-                                  ],
+                                  ),
                                 ),
-                                actions: [
-                                  IconButton(onPressed: () {
-                                    fakeDB.removeAt(index);
-                                    Navigator.pop(context);
-                                    setState(() {});
-                                  } 
-                                  , icon: const Icon(Icons.delete, color: Colors.red,)),
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: const Text('Cancel'),
+                                Container(
+                                    height: 30, width: 2, color: Colors.white),
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 20, right: 15),
+                                    child: Text(
+                                        dhikr.getAt(index)?.title ?? 'error',
+                                        style: const TextStyle(
+                                          fontSize: 12,
+                                        ),
+                                        maxLines: 2),
                                   ),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      fakeDB[index] = Dhikr(
-                                          counter: fakeDB[index].counter,
-                                          title: controller.text,
-                                          date: fakeDB[index].date,
-                                      );
+                                ),
+                                Text(
+                                  DateFormat('dd.MM.yyyy').format(
+                                      dhikr.getAt(index)?.date ??
+                                          DateTime.now()),
+                                  style: const TextStyle(
+                                    fontSize: 10,
+                                    color: Color(0xFF9F9F9F),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          title: const Text('Add Dhikr'),
+                                          content: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                  'Current Dhikr count: ${dhikr.getAt(index)?.counter ?? '0'}'),
+                                              const SizedBox(height: 10),
+                                              CupertinoTextField(
+                                                controller: controller,
+                                                placeholder:
+                                                    'Enter title of Dhikr',
+                                              ),
+                                            ],
+                                          ),
+                                          actions: [
+                                            IconButton(
+                                                onPressed: () {
+                                                  dhikr.deleteAt(index);
+                                                  Navigator.pop(context);
+                                                },
+                                                icon: const Icon(
+                                                  Icons.delete,
+                                                  color: Colors.red,
+                                                )),
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text('Cancel'),
+                                            ),
+                                            ElevatedButton(
+                                              onPressed: () {
+                                                dhikr.putAt(
+                                                  index,
+                                                  Dhikr(
+                                                    counter: dhikr
+                                                            .getAt(index)
+                                                            ?.counter ??
+                                                        0,
+                                                    title: controller.text,
+                                                    date: dhikr
+                                                            .getAt(index)
+                                                            ?.date ??
+                                                        DateTime.now(),
+                                                  ),
+                                                );
 
-                                      setState(() {});
-                                      Navigator.pop(context);
-                                    },
-                                    child: const Text('Save'),
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text('Save'),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: SizedBox(
+                                    width: 50,
+                                    height: 50,
+                                    child: Image.asset('assets/img/edit.png'),
                                   ),
-                                ],
-                              );
-                            },
+                                ),
+                              ],
+                            ),
                           );
                         },
-                        child: SizedBox(
-                          width: 50,
-                          height: 50,
-                          child: Image.asset('assets/img/edit.png'),
-                        ),
                       ),
-                    ],
-                  ),
+                    );
+                  },
                 );
-              },
-            ),
+              }
+            },
           ),
         ],
       ),

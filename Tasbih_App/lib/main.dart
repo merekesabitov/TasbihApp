@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/hive/dhikr_adapter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'pages/home/home.dart';
 import 'pages/settings/settings.dart';
 
-void main() {
+Future<void> main() async {
+  await Hive.initFlutter();
+  Hive.registerAdapter(DhikrAdapter());
+
   runApp(const Tasbih());
 }
 
