@@ -1,14 +1,17 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import '../../../providers/top_panel_provider.dart';
 import '../../../services/colors.dart';
 
 class TopPanel extends StatelessWidget {
-  final Function toogle;
-  final bool isActivity;
-  const TopPanel({required this.isActivity, required this.toogle, super.key});
+  const TopPanel({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final topPanelProvider = context.watch<TopPanelProvider>();
+
     return Container(
         margin: const EdgeInsets.only(top: 10, bottom: 20),
         child: Row(
@@ -27,18 +30,18 @@ class TopPanel extends StatelessWidget {
                   children: [
                     Expanded(child:
                     GestureDetector(
-                      onTap: () => toogle(false),
+                      onTap: () => topPanelProvider.toogle(false),
                       child: Container(
                         height: 30, 
                         decoration: BoxDecoration(
-                          color: isActivity ? myBlue : Colors.white,
+                          color: topPanelProvider.isActivity ? myBlue : Colors.white,
                           borderRadius: BorderRadius.circular(8),
                           ),
                           alignment: Alignment.center,
                           child: Text(
-                            'Activity',
+                            'Activity'.tr(),
                             style: TextStyle(
-                              color: isActivity ? Colors.white : Colors.black,
+                              color: topPanelProvider.isActivity ? Colors.white : Colors.black,
                               fontSize: 12,
                             ),
                           ),
@@ -47,18 +50,18 @@ class TopPanel extends StatelessWidget {
                     ),
                     Expanded(child:
                     GestureDetector(
-                      onTap: () => toogle(true),
+                      onTap: () => topPanelProvider.toogle(true),
                       child: Container(
                         height: 30,
                         decoration: BoxDecoration(
-                          color: isActivity ? Colors.white : myBlue,
+                          color: topPanelProvider.isActivity ? Colors.white : myBlue,
                           borderRadius: BorderRadius.circular(8),
                           ),
                           alignment: Alignment.center,
                           child: Text(
-                            'Saved',
+                            'Saved'.tr(),
                             style: TextStyle(
-                              color: isActivity ? Colors.black : Colors.white,
+                              color: topPanelProvider.isActivity ? Colors.black : Colors.white,
                               fontSize: 12,
                             ),
                           ),
