@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -14,6 +15,8 @@ class Settings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final myData = setupRemoteConfig();
+
     final locales = EasyLocalization.of(context)?.supportedLocales ??
         const [
           Locale('en'),
@@ -109,10 +112,34 @@ class Settings extends StatelessWidget {
                   ),
                 ),
               ),
+            ),
+            FutureBuilder(
+              future: myData,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState != ConnectionState.done) {
+                  return const Center(child: CupertinoActivityIndicator());
+                } else {
+                  if (snapshot.data != null) {
+                    return Text(snapshot.data!.getString('MyString'));
+                  } else {
+                    return const Center(child: CupertinoActivityIndicator());
+                  }
+                }
+              },
             )
           ],
         ),
       ),
     );
   }
+}
+
+Future<FirebaseRemoteConfig> setupRemoteConfig() async {
+  final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
+  await remoteConfig.setConfigSettings(RemoteConfigSettings(
+    fetchTimeout: const Duration(seconds: 10),
+    minimumFetchInterval: const Duration(hours: 1),
+  ));
+  await remoteConfig.fetchAndActivate();
+  return remoteConfig;
 }

@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/dhikr.dart';
@@ -14,6 +15,7 @@ class CounterPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final counterProvider = context.read<CounterProvider>();
+    final user = FirebaseAuth.instance.currentUser;
 
     return Visibility(
       visible: context.watch<TopPanelProvider>().isActivity,
@@ -86,51 +88,73 @@ class CounterPanel extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: Text('Add Dhikr'.tr()),
-                      content: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('${'Current counter:'.tr()} ${counterProvider.counter}'),
-                          const SizedBox(height: 10),
-                          CupertinoTextField(
-                            controller: counterProvider.controller,
-                            placeholder: 'Enter title of Dhikr'.tr(),
+                if (user == null) {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        contentPadding: const EdgeInsets.all(20.0),
+                        title: Text('Add Dhikr'.tr()),
+                        content: const Text('Log in to save dhikr', textAlign: TextAlign.start,),
+                        actions: [
+                          ElevatedButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text('Ok'))
+                        ],
+                      );
+                    },
+                  );
+                } else {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Text('Add Dhikr'.tr()),
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                                '${'Current counter:'.tr()} ${counterProvider.counter}'),
+                            const SizedBox(height: 10),
+                            CupertinoTextField(
+                              controller: counterProvider.controller,
+                              placeholder: 'Enter title of Dhikr'.tr(),
+                            ),
+                          ],
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text('Cancel'.tr()),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              Hive.box<Dhikr>('dhikrs').add(Dhikr(
+                                  counter: counterProvider.counter,
+                                  title: counterProvider.controller.text,
+                                  date: DateTime.now()));
+
+                              counterProvider.controller.clear();
+                              //widget.func();
+                              Navigator.pop(context);
+                            },
+                            child: Text('Save'.tr()),
                           ),
                         ],
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: Text('Cancel'.tr()),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            Hive.box<Dhikr>('dhikrs').add(Dhikr(
-                                counter: counterProvider.counter,
-                                title: counterProvider.controller.text,
-                                date: DateTime.now()));
-    
-                            counterProvider.controller.clear();
-                            //widget.func();
-                            Navigator.pop(context);
-                          },
-                          child: Text('Save'.tr()),
-                        ),
-                      ],
-                    );
-                  },
-                );
+                      );
+                    },
+                  );
+                }
               },
               child: Container(
                 decoration: BoxDecoration(
-                    color: Colors.white, borderRadius: BorderRadius.circular(5)),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(5)),
                 height: 45,
                 width: double.infinity,
                 alignment: Alignment.center,
