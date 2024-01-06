@@ -48,6 +48,8 @@ dependencies:
   firebase_analytics: ^10.7.4
   email_validator: ^2.1.17
   firebase_auth: ^4.16.0
+  awesome_dialog: ^3.2.0
+  quickalert: ^1.0.2
 
 dev_dependencies:
   flutter_test:

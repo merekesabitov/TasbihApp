@@ -56,7 +56,7 @@ class Tasbih extends StatelessWidget {
       child: KeyedSubtree(
         key: ValueKey(context.locale),
         child: MaterialApp.router(
-          debugShowCheckedModeBanner: true,
+          debugShowCheckedModeBanner: false,
           theme: ThemeData(
             fontFamily: 'Gilroy-Medium',
           ),

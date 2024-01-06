@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -89,23 +90,14 @@ class CounterPanel extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 if (user == null) {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        contentPadding: const EdgeInsets.all(20.0),
-                        title: Text('Add Dhikr'.tr()),
-                        content: const Text('Log in to save dhikr', textAlign: TextAlign.start,),
-                        actions: [
-                          ElevatedButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: const Text('Ok'))
-                        ],
-                      );
-                    },
-                  );
+                  AwesomeDialog(
+            context: context,
+            dialogType: DialogType.warning,
+            animType: AnimType.bottomSlide,
+            title: 'Add Dhikr',
+            desc: 'Log in to save Dhikr',
+            btnOkOnPress: () {},
+            ).show();
                 } else {
                   showDialog(
                     context: context,
