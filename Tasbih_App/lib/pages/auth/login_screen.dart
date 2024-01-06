@@ -33,7 +33,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> login() async {
-
     final isValid = formKey.currentState!.validate();
     if (!isValid) return;
 
@@ -61,8 +60,8 @@ class _LoginScreenState extends State<LoginScreen> {
         return;
       }
     }
-
-    context.go('/home', extra: (Route<dynamic> route) => false);
+    context.pushReplacement('/');
+    
   }
 
   @override

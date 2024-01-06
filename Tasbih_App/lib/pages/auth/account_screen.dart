@@ -16,7 +16,7 @@ class _AccountScreenState extends State<AccountScreen> {
 
     await FirebaseAuth.instance.signOut();
 
-    context.go('/home', extra: (Route<dynamic> route) => false);
+    context.pushReplacement('/');
   }
 
   @override

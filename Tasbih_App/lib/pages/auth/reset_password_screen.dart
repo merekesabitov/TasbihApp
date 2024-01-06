@@ -59,7 +59,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
     scaffoldMassager.showSnackBar(snackBar);
 
-    context.go('/home', extra: (Route<dynamic> route) => false);
+    context.pushReplacement('/');
   }
 
   @override

@@ -74,7 +74,7 @@ class _SignUpScreen extends State<SignUpScreen> {
       }
     }
 
-    context.go('/', extra: (Route<dynamic> route) => false);
+    context.pushReplacement('/');
   }
 
   @override
