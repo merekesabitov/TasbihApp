@@ -10,8 +10,7 @@ Tasbih App - digital tasbih counter for daily dhikr.
       <img src="https://i.ibb.co.com/fHp9Dy4/2.png" width="726">
 </p>
 
-## About
-The functionality of the main page:
+## Features
 
 ### Account: 
 - Registration
@@ -30,6 +29,10 @@ The functionality of the main page:
 ### Settings:
 - Change the language of the application: English, Russian and Spanish
 
-## Documentation
-
-Documentation Here
+## Technology stack / Libraries:
+- Provider (State management)
+- Shared Preferences, Hive (Storages)
+- Firebase (Auth/Analytics/RemoteConfig)
+- Go_router (Navigation)
+- Permission Handler
+- Easy localization
