@@ -10,7 +10,7 @@ Tasbih App - digital tasbih counter for daily dhikr.
       <img src="https://i.ibb.co.com/fHp9Dy4/2.png" width="726">
 </p>
 
-## Features
+## Features:
 
 ### Account: 
 - Registration
