@@ -3,11 +3,11 @@ Tasbih App - digital tasbih counter for daily dhikr.
 
 ## Illustrations
 <p align="center">
-      <img src="https://i.ibb.co.com/nPpy0cD/Tasbih-App-Workflow.png" width="726">
+      <img src="https://i.ibb.co.com/mFCFJrK/Tasbih-App-Workflow.png" width="726">
 </p>
 
 <p align="center">
-      <img src="https://i.ibb.co.com/dKM0bKr/Tasbih-App-Workflow-1.png" width="726">
+      <img src="https://i.ibb.co.com/1vdHsRb/Tasbih-App-Workflow-1.png" width="726">
 </p>
 
 ## Features:
